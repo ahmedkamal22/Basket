@@ -1,6 +1,6 @@
 # shop
 
-A new Flutter project.
+eCommerce App.
 
 ## Getting Started
 
