@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,12 +6,12 @@ import 'package:shop/layout/cubit/cubit.dart';
 import 'package:shop/layout/cubit/states.dart';
 import 'package:shop/models/products/home_model.dart';
 import 'package:shop/shared/components/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductDetails extends StatelessWidget {
   ProductsModel product;
-  int generalIndex;
 
-  ProductDetails(this.product, this.generalIndex);
+  ProductDetails(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +19,12 @@ class ProductDetails extends StatelessWidget {
       listener: (context, index) {},
       builder: (context, index) {
         var cubit = ShopCubit.get(context);
-        var model = cubit.homeModel!.data!.products[generalIndex];
+        var model = product;
         Color cubitColor = cubit.isDark ? Colors.white : Colors.black;
         return Scaffold(
           appBar: AppBar(),
           body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -35,7 +36,7 @@ class ProductDetails extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: cubitColor, height: 1.1, fontSize: 23),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -45,22 +46,26 @@ class ProductDetails extends StatelessWidget {
                           .bodyText1!
                           .copyWith(color: Colors.red),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Stack(
                       alignment: AlignmentDirectional.topStart,
                       children: [
-                        Image(
-                          image: NetworkImage("${model.image}"),
-                          height: 200,
-                          fit: BoxFit.fitHeight,
-                          width: double.infinity,
+                        Hero(
+                          tag: "${model.id}",
+                          child: FadeInImage(
+                            fadeInCurve: Curves.fastLinearToSlowEaseIn,
+                            placeholder: MemoryImage(kTransparentImage),
+                            image: NetworkImage("${model.image}"),
+                            width: double.infinity,
+                            height: 200.0,
+                          ),
                         ),
                         if (model.discount != 0)
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: const BoxDecoration(
                               borderRadius: BorderRadiusDirectional.only(
                                 bottomEnd: Radius.circular(20.0),
                                 topEnd: Radius.circular(20.0),
@@ -79,7 +84,7 @@ class ProductDetails extends StatelessWidget {
                           ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Row(
@@ -91,7 +96,7 @@ class ProductDetails extends StatelessWidget {
                                     color: defaultColor,
                                   ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         IconButton(
                           onPressed: () {
                             cubit.changeFavourites(model.id!);
@@ -101,7 +106,7 @@ class ProductDetails extends StatelessWidget {
                             backgroundColor: cubit.favourites[model.id]!
                                 ? defaultColor
                                 : Colors.grey,
-                            child: Icon(
+                            child: const Icon(
                               Icons.favorite_border_outlined,
                               color: Colors.white,
                               size: 16,
@@ -110,7 +115,7 @@ class ProductDetails extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     if (model.discount != 0)
@@ -125,7 +130,7 @@ class ProductDetails extends StatelessWidget {
                                     color: Colors.grey,
                                     decoration: TextDecoration.lineThrough),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Text(
                             "${model.discount}% OFF",
                             style:
@@ -135,7 +140,7 @@ class ProductDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
@@ -145,11 +150,11 @@ class ProductDetails extends StatelessWidget {
                           .bodyText1!
                           .copyWith(color: cubitColor, fontSize: 25),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadiusDirectional.circular(30.0)),

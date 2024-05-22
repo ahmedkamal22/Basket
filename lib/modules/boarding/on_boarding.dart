@@ -20,20 +20,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   List<OnBoardingModel> boarding = [
     OnBoardingModel(
-      title: "Title 1",
-      body: "Body 1",
+      title: "Welcome to Basket!",
+      body: "Your one-stop shop for everything you love.",
       image:
           "https://media.istockphoto.com/photos/shopping-basket-with-fresh-food-grocery-supermarket-food-and-eats-picture-id1216828053?k=20&m=1216828053&s=612x612&w=0&h=mMGSO8bG8aN0gP4wyXC17WDIcf9zcqIxBd-WZto-yeg=",
     ),
     OnBoardingModel(
-      title: "Title 2",
-      body: "Body 2",
+      title: "Explore Our Categories",
+      body: "From electronics to fashion, find it all.",
       image:
           "https://image.shutterstock.com/image-vector/concept-illustration-shop-supermarket-account-260nw-427049824.jpg",
     ),
     OnBoardingModel(
-      title: "Title 3",
-      body: "Body 3",
+      title: " Exclusive Offers Just for You",
+      body: "Save more with our special deals.",
       image:
           "https://media.istockphoto.com/photos/shopping-basket-with-fresh-food-grocery-supermarket-food-and-eats-picture-id1216828053?k=20&m=1216828053&s=612x612&w=0&h=mMGSO8bG8aN0gP4wyXC17WDIcf9zcqIxBd-WZto-yeg=",
     ),
@@ -91,7 +91,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 itemCount: boarding.length,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 70,
             ),
             Row(
@@ -101,7 +101,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   count: boarding.length,
                   effect: SlideEffect(
                       spacing: 8.0,
-                      radius: 15.0,
+                      radius: 20.0,
                       dotWidth: 24.0,
                       dotHeight: 16.0,
                       paintStyle: PaintingStyle.stroke,

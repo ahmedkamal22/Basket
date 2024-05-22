@@ -1,13 +1,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop/layout/cubit/cubit.dart';
 import 'package:shop/layout/cubit/states.dart';
 import 'package:shop/models/favourites/favourites_model.dart';
 import 'package:shop/modules/products/product_details.dart';
 import 'package:shop/shared/components/components.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class FavouritesScreen extends StatelessWidget {
   FavouritesScreen({Key? key}) : super(key: key);
@@ -22,29 +21,20 @@ class FavouritesScreen extends StatelessWidget {
         //     cubit.favouritesModel!.data!.data.length
         // ;
         return SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               ConditionalBuilder(
                 condition: cubit.favouritesModel!.data!.data.isNotEmpty,
                 builder: (context) => ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            navigateTo(
-                                context: context,
-                                widget: ProductDetails(
-                                    cubit.homeModel!.data!.products[index],
-                                    index));
-                          },
-                          child: buildFavItem(
-                              cubit.favouritesModel!.data!.data[index].product!,
-                              context),
-                        ),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => buildFavItem(
+                        cubit.favouritesModel!.data!.data[index].product!,
+                        context),
                     separatorBuilder: (context, index) => lineDivider(),
                     itemCount: cubit.favouritesModel!.data!.data.length),
-                fallback: (context) => Container(
+                fallback: (context) => SizedBox(
                   height: 450,
                   width: double.infinity,
                   child: testScreen(
@@ -79,8 +69,8 @@ class FavouritesScreen extends StatelessWidget {
         onDismissed: (direction) {
           ShopCubit.get(context).changeFavourites(model.id!);
         },
-        child: Container(
-          height: 140,
+        child: SizedBox(
+          height: 160,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -88,12 +78,15 @@ class FavouritesScreen extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    Image(
-                      image: NetworkImage(
-                        "${model.image}",
+                    Hero(
+                      tag: "${model.id}",
+                      child: FadeInImage(
+                        fadeInCurve: Curves.fastLinearToSlowEaseIn,
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: NetworkImage("${model.image}", scale: 4),
+                        height: 140,
+                        width: 120,
                       ),
-                      height: 140,
-                      width: 120,
                     ),
                     if (model.discount != 0)
                       Container(
@@ -112,7 +105,7 @@ class FavouritesScreen extends StatelessWidget {
                       )
                   ],
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,10 +121,10 @@ class FavouritesScreen extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
-                      if (model.discount == 0) Spacer(),
+                      if (model.discount == 0) const Spacer(),
                       Text(
                         "${model.price.round()}EGP",
                         style: Theme.of(context)
@@ -139,13 +132,13 @@ class FavouritesScreen extends StatelessWidget {
                             .bodyText1!
                             .copyWith(fontSize: 16, color: Colors.blue),
                       ),
-                      if (model.discount != 0) Spacer(),
+                      if (model.discount != 0) const Spacer(),
                       if (model.discount != 0)
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               if (model.discount != 0)
                                 Text(
                                   "${model.oldPrice.round()}EGP",
@@ -158,7 +151,7 @@ class FavouritesScreen extends StatelessWidget {
                                           decoration:
                                               TextDecoration.lineThrough),
                                 ),
-                              Spacer(),
+                              const Spacer(),
                               if (model.discount != 0)
                                 Text(
                                   "${model.discount}% OFF",

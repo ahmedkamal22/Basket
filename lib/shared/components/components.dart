@@ -1,15 +1,49 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:shop/layout/cubit/cubit.dart';
 import 'package:shop/modules/login/login.dart';
+import 'package:shop/shared/components/constants.dart';
 import 'package:shop/shared/network/locale/cache_helper.dart';
 
 navigateTo({required BuildContext context, required Widget widget}) =>
-    Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => widget,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }));
 
 navigateAndFinish({required context, required widget}) =>
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => widget), (route) => false);
+    Navigator.pushAndRemoveUntil(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => widget,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }),
+        (route) => false);
 
 defaultTextButton({
   required VoidCallback onPressed,
@@ -158,3 +192,111 @@ signOut({
     navigateAndFinish(context: context, widget: LoginScreen());
   });
 }
+
+Widget customDrawer({required context, required Function() settingsNavigation}) =>
+    Drawer(
+        width: MediaQuery.of(context).size.width / 1.5,
+        shadowColor: Colors.white,
+        backgroundColor: HexColor("333739"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.only(
+            topEnd: Radius.circular(20),
+            bottomEnd: Radius.circular(10),
+          ),
+        ),
+        child: Column(children: [
+          DrawerHeader(
+            padding: const EdgeInsets.all(20),
+            curve: Curves.fastEaseInToSlowEaseOut,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  defaultColor,
+                  Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withOpacity(.5),
+                ],
+                begin: AlignmentDirectional.topStart,
+                end: AlignmentDirectional.bottomEnd,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.shopping_cart,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  "Basket",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10,),
+          defaultListTile(
+            context: context,
+            icon: Icons.settings,
+            text: "Settings",
+            onTap: settingsNavigation,
+          ),
+        ]));
+
+Widget defaultListTile({
+  required context,
+  required IconData icon,
+  required String text,
+  required Function()? onTap,
+}) =>
+    ListTile(
+      leading: Icon(icon,
+          size: 30, color: Colors.white),
+      title: Text(text,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20)),
+      hoverColor: Colors.blue,
+      onTap: onTap,
+    );
+
+Widget defaultSwitchListTile({
+  required context,
+  required bool value,
+  required Function(bool)? onChanged,
+  required String text,
+  required String subtitle,
+}) =>
+    SwitchListTile(
+      value: value,
+      onChanged: onChanged,
+      title: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: ShopCubit.get(context).isDark?Colors.white:Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+          color: ShopCubit.get(context).isDark?Colors.white:Colors.black,
+            fontSize: 16
+        ),
+      ),
+      activeColor: defaultColor,
+      contentPadding: const EdgeInsetsDirectional.only(
+        start: 34,
+        end: 22,
+      ),
+    );
+

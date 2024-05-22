@@ -45,17 +45,13 @@ dependencies:
   carousel_slider: ^4.1.1
   flutter_stripe: ^2.0.1
   http: ^0.13.4
+  transparent_image: ^2.0.1
+  curved_navigation_bar_with_label: ^2.1.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: ^0.9.3
-
-flutter_icons:
-  image_path: "assets/images/basket.png"
-  android: true
-  ios: true
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

@@ -6,7 +6,7 @@ import 'package:shop/shared/components/constants.dart';
 ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primarySwatch: defaultColor,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     elevation: 0.0,
     systemOverlayStyle: SystemUiOverlayStyle(
@@ -21,7 +21,7 @@ ThemeData lightTheme = ThemeData(
       color: Colors.black,
     ),
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyText1: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -44,14 +44,14 @@ ThemeData darkTheme = ThemeData(
       statusBarIconBrightness: Brightness.light,
     ),
     titleSpacing: 20,
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.white,
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: Colors.white,
     ),
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyText1: TextStyle(
       fontSize: 20.0,
       fontWeight: FontWeight.bold,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 MaterialColor defaultColor = Colors.blue;
 
-late String userToken;
+String userToken = "B0M9vF2KWkwaPjEXvCvm0zSrEbm7oJUw2S9cMOvSbizh1X7dqnE0tINSA7h1ND3EZ7H8J8";
 
 String stripeKey =
     'pk_test_51L7NLXHjmyadU3ZuKjuHJHDfj37tZTTwfG14BCmuC3EcJErcp7eVbo33omnjpF3onclMvnUBUz7xXP81UCTydXKo00fT53Bykd';

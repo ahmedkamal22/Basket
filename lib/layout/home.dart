@@ -1,9 +1,12 @@
+import 'package:curved_navigation_bar_with_label/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop/layout/cubit/cubit.dart';
 import 'package:shop/layout/cubit/states.dart';
 import 'package:shop/modules/search/search.dart';
+import 'package:shop/modules/settings/settings_screen.dart';
 import 'package:shop/shared/components/components.dart';
+import 'package:shop/shared/components/constants.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,24 +29,24 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     navigateTo(context: context, widget: SearchScreen());
                   },
-                  icon: Icon(Icons.search)),
-              IconButton(
-                  onPressed: () {
-                    cubit.changeMode();
-                  },
-                  icon: cubit.isDark
-                      ? Icon(Icons.brightness_4_outlined)
-                      : Icon(Icons.brightness_4)),
+                  icon: const Icon(Icons.search)),
             ],
           ),
           body: cubit.screens[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: cubit.currentIndex,
+          bottomNavigationBar: CurvedNavigationBar(
+            buttonBackgroundColor: Colors.transparent,
+            backgroundColor: defaultColor,
+            animationDuration: const Duration(milliseconds: 300),
+            animationCurve: Curves.fastEaseInToSlowEaseOut,
+            index: cubit.currentIndex,
             onTap: (index) {
               cubit.changeBottomNav(index);
             },
             items: cubit.items,
           ),
+          drawer: customDrawer(context: context, settingsNavigation: (){
+            navigateTo(context: context, widget: SettingsScreen());
+          }),
         );
       },
     );

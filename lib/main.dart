@@ -21,11 +21,11 @@ void main() async {
   await CacheHelper.init();
   Widget widget;
   var boarding = CacheHelper.getData(key: "Boarding");
-  userToken = CacheHelper.getData(key: "token");
   var isDark = CacheHelper.getData(key: "isDark");
+  userToken ?? CacheHelper.getData(key: "token");
   if (boarding != null) {
     if (userToken != null) {
-      widget = HomeScreen();
+      widget = const HomeScreen();
     } else {
       widget = LoginScreen();
     }

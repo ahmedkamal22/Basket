@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:curved_navigation_bar_with_label/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -58,12 +59,11 @@ class ShopCubit extends Cubit<ShopStates> {
     AccountScreen(),
   ];
 
-  List<BottomNavigationBarItem> items = [
-    const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-    const BottomNavigationBarItem(icon: Icon(Icons.apps), label: "Categories"),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.favorite), label: "Favorites"),
-    const BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
+  List<CurvedNavigationBarItem> items = [
+    CurvedNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+    CurvedNavigationBarItem(icon: Icon(Icons.apps), label: "Categories"),
+    CurvedNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorites"),
+    CurvedNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
   ];
   Map<int, bool> favourites = {};
   HomeModel? homeModel;
@@ -107,8 +107,6 @@ class ShopCubit extends Cubit<ShopStates> {
   FavouritesModel? favouritesModel;
 
   getFavouritesData() {
-    userToken =
-        "aOAR22BS7uj2kWpgYDRIVrh1c3yzW1yCOWF0qDYxewyw5hiC3oaW0di9GyYvJWBjNCdeQj";
     emit(ShopGetFavouritesLoadingState());
     DioHelper.getData(key: Favourites, token: userToken).then((value) {
       favouritesModel = FavouritesModel.fromJson(value.data);

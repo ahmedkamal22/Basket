@@ -1,18 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shop/layout/cubit/cubit.dart';
 import 'package:shop/layout/cubit/states.dart';
 import 'package:shop/models/categories/categories.dart';
+import 'package:shop/models/favourites/favourites_model.dart';
 import 'package:shop/models/products/home_model.dart';
 import 'package:shop/modules/login/login.dart';
 import 'package:shop/modules/products/product_details.dart';
 import 'package:shop/shared/components/components.dart';
 import 'package:shop/shared/components/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class ProductsScreen extends StatelessWidget {
             condition: cubit.homeModel != null && cubit.categoriesModel != null,
             builder: (context) => buildProductsItem(
                 cubit.homeModel!, cubit.categoriesModel!, context),
-            fallback: (context) => Center(child: CircularProgressIndicator()));
+            fallback: (context) => const Center(child: CircularProgressIndicator()));
       },
     );
   }
@@ -43,7 +43,7 @@ class ProductsScreen extends StatelessWidget {
   Widget buildProductsItem(
           HomeModel home, CategoriesModel categories, context) =>
       SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -54,8 +54,8 @@ class ProductsScreen extends StatelessWidget {
                     .map(
                       (e) => Image(
                         image: e.image == null
-                            ? NetworkImage(
-                                "https://i.stack.imgur.com/6M513.png")
+                            ? const NetworkImage(
+                                "https://img.freepik.com/premium-vector/online-shopping-concept-shopping-cart-with-bags-standing-upon-big-mobile-phone-flat-vector-design_196604-87.jpg?w=1060")
                             : NetworkImage("${e.image}"),
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -69,15 +69,15 @@ class ProductsScreen extends StatelessWidget {
                   enableInfiniteScroll: true,
                   reverse: false,
                   autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enlargeCenterPage: true,
                   scrollDirection: Axis.horizontal,
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -92,23 +92,23 @@ class ProductsScreen extends StatelessWidget {
                               : Colors.black,
                         ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     height: 120,
                     child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => buildCategoriesItem(
                             categories.data!.data[index], context),
                         separatorBuilder: (context, index) =>
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                         itemCount: categories.data!.data.length),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsetsDirectional.only(start: 20.0),
               child: Text(
@@ -122,21 +122,20 @@ class ProductsScreen extends StatelessWidget {
               ),
             ),
             GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               crossAxisCount: 2,
               mainAxisSpacing: 1,
               crossAxisSpacing: 2,
               reverse: true,
-              childAspectRatio: 1 / 1.66,
+              childAspectRatio: 1 / 1.70,
               children: List.generate(
                   home.data!.products.length,
                   (index) => InkWell(
                       onTap: () {
                         navigateTo(
                             context: context,
-                            widget: ProductDetails(
-                                home.data!.products[index], index));
+                            widget: ProductDetails(home.data!.products[index]));
                       },
                       child:
                           buildGridItem(home.data!.products[index], context))),
@@ -164,14 +163,19 @@ class ProductsScreen extends StatelessWidget {
                   Stack(
                     alignment: AlignmentDirectional.bottomStart,
                     children: [
-                      Image(
-                        image: NetworkImage("${model.image}", scale: 4),
-                        width: double.infinity,
-                        height: 200.0,
+                      Hero(
+                        tag: "${model.id}",
+                        child: FadeInImage(
+                          fadeInCurve: Curves.fastLinearToSlowEaseIn,
+                          placeholder: MemoryImage(kTransparentImage),
+                          image: NetworkImage("${model.image}", scale: 4),
+                          width: double.infinity,
+                          height: 200.0,
+                        ),
                       ),
                       if (model.discount != 0)
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           color: Colors.red,
                           child: Text(
                             "Discount",
@@ -183,7 +187,7 @@ class ProductsScreen extends StatelessWidget {
                         ),
                     ],
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   Text(
                     "${model.name}",
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -195,17 +199,17 @@ class ProductsScreen extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   if (model.discount != 0)
                     Text(
                       "${model.price.round()}EGP",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.blue,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: [
                       Text(
@@ -221,11 +225,11 @@ class ProductsScreen extends StatelessWidget {
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       if (model.discount != 0)
                         Text(
                           "${model.discount.round()}% OFF",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.green),
@@ -259,7 +263,7 @@ class ProductsScreen extends StatelessWidget {
                 backgroundColor: ShopCubit.get(context).favourites[model.id]!
                     ? defaultColor
                     : Colors.grey,
-                child: Icon(
+                child: const Icon(
                   Icons.favorite_border_outlined,
                   size: 15.0,
                   color: Colors.white,
@@ -278,7 +282,7 @@ class ProductsScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadiusDirectional.only(
+                borderRadius: const BorderRadiusDirectional.only(
                     topStart: Radius.circular(20.0),
                     topEnd: Radius.circular(20.0)),
                 image: DecorationImage(
@@ -290,7 +294,7 @@ class ProductsScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               color: Colors.black.withOpacity(.9),
-              padding: EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 "${model.name}",
                 textAlign: TextAlign.center,
